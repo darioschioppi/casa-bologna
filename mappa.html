@@ -49,7 +49,7 @@
 </header>
 <nav>
   <a href="./index.html">← Torna all'elenco</a>
-  <a href="./agenzie.csv">Dati CSV</a>
+  <a href="./agenzie.json">Dati JSON</a>
 </nav>
 
 <div id="status">Caricamento e geocodifica indirizzi in corso...</div>
@@ -59,7 +59,7 @@
 <div class="unlocated" id="unlocated"></div>
 
 <footer>
-  Dati gestiti in <a href="./agenzie.csv">agenzie.csv</a> —
+  Dati gestiti in <a href="./agenzie.json">agenzie.json</a> —
   <a href="https://github.com/darioschioppi/casa-bologna">repo su GitHub</a>
 </footer>
 
@@ -73,36 +73,9 @@ const STATO_COLORS = {
   'scartata': '#ff8f8f',
 };
 
-function parseCSVLine(line) {
-  const result = [];
-  let cur = '', inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (inQuotes) {
-      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
-      else if (c === '"') { inQuotes = false; }
-      else { cur += c; }
-    } else {
-      if (c === '"') inQuotes = true;
-      else if (c === ',') { result.push(cur); cur = ''; }
-      else cur += c;
-    }
-  }
-  result.push(cur);
-  return result;
-}
-
-async function loadCSV() {
-  const res = await fetch('./agenzie.csv?_=' + Date.now());
-  const text = await res.text();
-  const lines = text.trim().split(/\r?\n/);
-  const headers = parseCSVLine(lines[0]);
-  return lines.slice(1).map(line => {
-    const values = parseCSVLine(line);
-    const obj = {};
-    headers.forEach((h, i) => obj[h.trim()] = (values[i] || '').trim());
-    return obj;
-  }).filter(o => o.nome_agenzia);
+async function loadData() {
+  const res = await fetch('./agenzie.json?_=' + Date.now());
+  return await res.json();
 }
 
 function escapeHtml(s) {
@@ -146,7 +119,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  const agenzie = await loadCSV();
+  const agenzie = await loadData();
   const cache = loadCache();
   const bounds = [];
   const unlocated = [];
