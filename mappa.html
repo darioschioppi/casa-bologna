@@ -182,6 +182,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
       fillOpacity: 0.9,
     }).addTo(map);
 
+    const gmapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + coords[0] + ',' + coords[1];
     const popupHtml = `
       <div class="popup">
         <h3>${escapeHtml(a.nome_agenzia)}</h3>
@@ -191,6 +192,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
         ${a.email ? `<div class="row"><span>Email:</span> <a href="mailto:${escapeHtml(a.email)}">${escapeHtml(a.email)}</a></div>` : ''}
         ${a.sito_web ? `<div class="row"><span>Sito:</span> <a href="${escapeHtml(a.sito_web)}" target="_blank" rel="noopener">apri sito</a></div>` : ''}
         <div class="row"><span>Stato:</span> ${escapeHtml(stato)}</div>
+        <div class="row"><a href="${gmapsUrl}" target="_blank" rel="noopener">🗺️ Apri in Google Maps</a></div>
       </div>
     `;
     marker.bindPopup(popupHtml);
