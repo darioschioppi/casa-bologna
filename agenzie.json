@@ -414,9 +414,24 @@
     "persona_contatto": "",
     "stato": "da contattare",
     "data_ultimo_contatto": "",
-    "note": "Specializzata in immobili commerciali/industriali",
-    "google_maps_url": "attiva dal 1994 - meno rilevante per residenziale ma segnalata in zona.",
+    "note": "Specializzata in immobili commerciali/industriali, attiva dal 1994 - meno rilevante per residenziale ma segnalata in zona.",
+    "google_maps_url": "",
     "lat": 44.4982607,
     "lon": 11.4231743
+  },
+  {
+    "nome_agenzia": "Tecnocasa Bologna - Santa Rita",
+    "zona": "Santa Rita",
+    "indirizzo": "Via Giuseppe Massarenti 193/C, 40138",
+    "telefono": "051 4071883",
+    "email": "bocff@tecnocasa.it",
+    "sito_web": "https://bologna21.tecnocasa.it/bologna/santa-rita/",
+    "persona_contatto": "",
+    "stato": "da contattare",
+    "data_ultimo_contatto": "2026-09-06",
+    "note": "Zona: Bologna-Santa Rita-San Vitale-Massarenti-Larga-Martelli. Orari: Lun-Ven 9-13/15-20, Sab 9-13.",
+    "google_maps_url": "https://maps.app.goo.gl/s8XcgHvqgaiwnT8L9",
+    "lat": 44.4932321,
+    "lon": 11.3842905
   }
 ]
