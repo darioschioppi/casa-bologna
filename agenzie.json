@@ -188,9 +188,9 @@
     "sito_web": "https://www.immobiliaresanlazzaro.it/",
     "persona_contatto": "",
     "stato": "da contattare",
-    "data_ultimo_contatto": "",
-    "note": "WhatsApp +39 339 7759182. Telefono alternativo 051 6271468.",
-    "google_maps_url": "",
+    "data_ultimo_contatto": "2026-09-06",
+    "note": "WhatsApp +39 339 7759182. Telefono alternativo 051 6271468. Attenzione: il pin Google Maps (nome scheda 'Immobiliare San Lazzaro S.R.L.') punta a Via Antonio Gramsci 20 (~880m da qui), diverso dall'indirizzo Via Caselle 13 indicato sul sito ufficiale - verificare quale sia la sede attuale.",
+    "google_maps_url": "https://maps.app.goo.gl/UnyUmQ8Pb52rX6wb7",
     "lat": 44.4788523,
     "lon": 11.4127825
   },
