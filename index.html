@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Bologna 🏠 — Mappa Agenzie Immobiliari</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --accent:#4ea1ff; --accent2:#ffb84e;
+    --text:#e8eaed; --muted:#9aa0a8; --border:#2a2e37;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,#0f1115,#14171d); color:var(--text); min-height:100vh;
+  }
+  header{
+    padding:36px 20px 20px; text-align:center;
+  }
+  header h1{ margin:0 0 6px; font-size:2rem; }
+  header p{ margin:0; color:var(--muted); }
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 20px 60px; }
+  .toolbar{
+    display:flex; gap:12px; flex-wrap:wrap; margin:24px 0; align-items:center;
+  }
+  .toolbar input, .toolbar select{
+    background:var(--card); border:1px solid var(--border); color:var(--text);
+    padding:10px 14px; border-radius:8px; font-size:0.95rem;
+  }
+  .toolbar input{ flex:1; min-width:200px; }
+  .stats{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:20px; }
+  .stat{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    padding:14px 18px; min-width:120px; text-align:center;
+  }
+  .stat .n{ font-size:1.6rem; font-weight:700; color:var(--accent); }
+  .stat .l{ font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .card h3{ margin:0; font-size:1.1rem; }
+  .badge{
+    display:inline-block; font-size:0.72rem; padding:3px 10px; border-radius:20px;
+    text-transform:uppercase; letter-spacing:0.03em; font-weight:600; align-self:flex-start;
+  }
+  .b-da-contattare{ background:#3a3220; color:var(--accent2); }
+  .b-contattata{ background:#1f3a45; color:#5fd0ff; }
+  .b-appuntamento-fissato{ background:#26402a; color:#7be08a; }
+  .b-visitata{ background:#2a2a45; color:#a5a5ff; }
+  .b-scartata{ background:#402626; color:#ff8f8f; }
+  .card .zona{ color:var(--muted); font-size:0.85rem; }
+  .card .row{ font-size:0.9rem; color:var(--text); }
+  .card .row span{ color:var(--muted); }
+  .card a{ color:var(--accent); text-decoration:none; }
+  .card a:hover{ text-decoration:underline; }
+  .empty{ text-align:center; color:var(--muted); padding:60px 20px; }
+  footer{ text-align:center; color:var(--muted); font-size:0.85rem; padding:30px 20px; }
+  footer a{ color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏠 Casa Bologna</h1>
+  <p>Mappa delle agenzie immobiliari nel Comune di Bologna — contatti, stato visite, note</p>
+</header>
+
+<div class="wrap">
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <input type="text" id="search" placeholder="Cerca per nome, zona, persona di contatto...">
+    <select id="filterZona"><option value="">Tutte le zone</option></select>
+    <select id="filterStato"><option value="">Tutti gli stati</option></select>
+  </div>
+
+  <div class="cards" id="cards"></div>
+  <div class="empty" id="empty" style="display:none;">Nessuna agenzia trovata con i filtri attuali.</div>
+</div>
+
+<footer>
+  Dati gestiti in <a href="./agenzie.csv">agenzie.csv</a> —
+  <a href="https://github.com/darioschioppi/casa-bologna">repo su GitHub</a>
+</footer>
+
+<script>
+async function loadCSV() {
+  const res = await fetch('./agenzie.csv?_=' + Date.now());
+  const text = await res.text();
+  const lines = text.trim().split(/\r?\n/);
+  const headers = parseCSVLine(lines[0]);
+  return lines.slice(1).map(line => {
+    const values = parseCSVLine(line);
+    const obj = {};
+    headers.forEach((h, i) => obj[h.trim()] = (values[i] || '').trim());
+    return obj;
+  }).filter(o => o.nome_agenzia);
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '', inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (inQuotes) {
+      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { cur += c; }
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ',') { result.push(cur); cur = ''; }
+      else cur += c;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+function slug(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
+
+function badgeClass(stato) {
+  return 'b-' + slug(stato || 'da contattare');
+}
+
+let ALL = [];
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const fz = document.getElementById('filterZona').value;
+  const fs = document.getElementById('filterStato').value;
+
+  const filtered = ALL.filter(a => {
+    const matchesQ = !q || Object.values(a).some(v => (v||'').toLowerCase().includes(q));
+    const matchesZ = !fz || a.zona === fz;
+    const matchesS = !fs || a.stato === fs;
+    return matchesQ && matchesZ && matchesS;
+  });
+
+  const cardsEl = document.getElementById('cards');
+  const emptyEl = document.getElementById('empty');
+  cardsEl.innerHTML = '';
+
+  if (!filtered.length) {
+    emptyEl.style.display = 'block';
+  } else {
+    emptyEl.style.display = 'none';
+    filtered.forEach(a => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <span class="badge ${badgeClass(a.stato)}">${a.stato || 'da contattare'}</span>
+        <h3>${escapeHtml(a.nome_agenzia)}</h3>
+        <div class="zona">📍 ${escapeHtml(a.zona || '—')}${a.indirizzo ? ' · ' + escapeHtml(a.indirizzo) : ''}</div>
+        ${a.persona_contatto ? `<div class="row"><span>Referente:</span> ${escapeHtml(a.persona_contatto)}</div>` : ''}
+        ${a.telefono ? `<div class="row"><span>Tel:</span> <a href="tel:${escapeHtml(a.telefono)}">${escapeHtml(a.telefono)}</a></div>` : ''}
+        ${a.email ? `<div class="row"><span>Email:</span> <a href="mailto:${escapeHtml(a.email)}">${escapeHtml(a.email)}</a></div>` : ''}
+        ${a.sito_web ? `<div class="row"><span>Sito:</span> <a href="${escapeHtml(a.sito_web)}" target="_blank" rel="noopener">${escapeHtml(a.sito_web)}</a></div>` : ''}
+        ${a.data_ultimo_contatto ? `<div class="row"><span>Ultimo contatto:</span> ${escapeHtml(a.data_ultimo_contatto)}</div>` : ''}
+        ${a.note ? `<div class="row"><span>Note:</span> ${escapeHtml(a.note)}</div>` : ''}
+      `;
+      cardsEl.appendChild(card);
+    });
+  }
+
+  renderStats();
+}
+
+function renderStats() {
+  const statsEl = document.getElementById('stats');
+  const total = ALL.length;
+  const byStato = {};
+  ALL.forEach(a => {
+    const s = a.stato || 'da contattare';
+    byStato[s] = (byStato[s] || 0) + 1;
+  });
+  const order = ['da contattare','contattata','appuntamento fissato','visitata','scartata'];
+  let html = `<div class="stat"><div class="n">${total}</div><div class="l">Totale</div></div>`;
+  order.forEach(s => {
+    if (byStato[s]) {
+      html += `<div class="stat"><div class="n">${byStato[s]}</div><div class="l">${s}</div></div>`;
+    }
+  });
+  statsEl.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function populateFilters() {
+  const zonaSel = document.getElementById('filterZona');
+  const statoSel = document.getElementById('filterStato');
+  const zone = [...new Set(ALL.map(a => a.zona).filter(Boolean))].sort();
+  const stati = [...new Set(ALL.map(a => a.stato).filter(Boolean))].sort();
+  zone.forEach(z => {
+    const opt = document.createElement('option');
+    opt.value = z; opt.textContent = z;
+    zonaSel.appendChild(opt);
+  });
+  stati.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    statoSel.appendChild(opt);
+  });
+}
+
+(async function init() {
+  ALL = await loadCSV();
+  populateFilters();
+  render();
+  document.getElementById('search').addEventListener('input', render);
+  document.getElementById('filterZona').addEventListener('change', render);
+  document.getElementById('filterStato').addEventListener('change', render);
+})();
+</script>
+
+</body>
+</html>
