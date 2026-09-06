@@ -433,5 +433,20 @@
     "google_maps_url": "https://maps.app.goo.gl/s8XcgHvqgaiwnT8L9",
     "lat": 44.4932321,
     "lon": 11.3842905
+  },
+  {
+    "nome_agenzia": "Kapitalre - Castenaso",
+    "zona": "Castenaso",
+    "indirizzo": "Via Bruno Tosarelli 34, 40055",
+    "telefono": "051 784242",
+    "email": "castenaso@kapitalre.it",
+    "sito_web": "https://www.kapitalre.it/",
+    "persona_contatto": "",
+    "stato": "da contattare",
+    "data_ultimo_contatto": "2026-09-06",
+    "note": "",
+    "google_maps_url": "https://maps.app.goo.gl/vPCQFE5SUaMq9FrJ9",
+    "lat": 44.4982607,
+    "lon": 11.4231743
   }
 ]
