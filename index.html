@@ -38,9 +38,9 @@
   .cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
   .card{
     background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px;
-    display:flex; flex-direction:column; gap:8px;
+    display:flex; flex-direction:column; gap:8px; overflow-wrap:anywhere; min-width:0;
   }
-  .card h3{ margin:0; font-size:1.1rem; }
+  .card h3{ margin:0; font-size:1.1rem; overflow-wrap:anywhere; }
   .badge{
     display:inline-block; font-size:0.72rem; padding:3px 10px; border-radius:20px;
     text-transform:uppercase; letter-spacing:0.03em; font-weight:600; align-self:flex-start;
@@ -132,7 +132,8 @@ function render() {
         ${a.persona_contatto ? `<div class="row"><span>Referente:</span> ${escapeHtml(a.persona_contatto)}</div>` : ''}
         ${a.telefono ? `<div class="row"><span>Tel:</span> <a href="tel:${escapeHtml(a.telefono)}">${escapeHtml(a.telefono)}</a></div>` : ''}
         ${a.email ? `<div class="row"><span>Email:</span> <a href="mailto:${escapeHtml(a.email)}">${escapeHtml(a.email)}</a></div>` : ''}
-        ${a.sito_web ? `<div class="row"><span>Sito:</span> <a href="${escapeHtml(a.sito_web)}" target="_blank" rel="noopener">${escapeHtml(a.sito_web)}</a></div>` : ''}
+        ${a.sito_web ? `<div class="row"><span>Sito:</span> <a href="${escapeHtml(a.sito_web)}" target="_blank" rel="noopener">apri sito</a></div>` : ''}
+        ${a.google_maps_url ? `<div class="row"><a href="${escapeHtml(a.google_maps_url)}" target="_blank" rel="noopener">🗺️ Apri in Google Maps</a></div>` : ''}
         ${a.data_ultimo_contatto ? `<div class="row"><span>Ultimo contatto:</span> ${escapeHtml(a.data_ultimo_contatto)}</div>` : ''}
         ${a.note ? `<div class="row"><span>Note:</span> ${escapeHtml(a.note)}</div>` : ''}
       `;
