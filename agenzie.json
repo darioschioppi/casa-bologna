@@ -315,6 +315,21 @@
     "lon": 11.3641467
   },
   {
+    "nome_agenzia": "Tempocasa Bologna San Donnino",
+    "zona": "San Donato",
+    "indirizzo": "Via San Donato 124/D, 40127",
+    "telefono": "051 6334664",
+    "email": "bolognasandonnino@tempocasa.it",
+    "sito_web": "https://www.tempocasa.it/",
+    "persona_contatto": "",
+    "stato": "da contattare",
+    "data_ultimo_contatto": "2026-09-06",
+    "note": "Nota anche come 'Tempocasa San Donato 2'.",
+    "google_maps_url": "https://maps.app.goo.gl/wtPJYoFBqoGGiWzc9",
+    "lat": 44.5061073,
+    "lon": 11.3733214
+  },
+  {
     "nome_agenzia": "Tecnocasa Studio Castenaso",
     "zona": "Castenaso",
     "indirizzo": "Via P. C. S. Nasica 55",
