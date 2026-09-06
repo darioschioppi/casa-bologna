@@ -285,6 +285,21 @@
     "lon": 11.3681543
   },
   {
+    "nome_agenzia": "Tecnocasa Bologna - San Donnino",
+    "zona": "San Donato",
+    "indirizzo": "Via San Donato 158/71, 40127",
+    "telefono": "051 510107",
+    "email": "",
+    "sito_web": "https://bologna7.tecnocasa.it/bologna/san-donnino/",
+    "persona_contatto": "",
+    "stato": "da contattare",
+    "data_ultimo_contatto": "2026-09-06",
+    "note": "Altra sede Tecnocasa nella stessa zona (San Donato/San Donnino/Meraville), diversa da 'Tecnocasa Studio San Donato' Via San Donato 72/A. Orari: Lun-Ven 9-13/15-20, Sab 9-13.",
+    "google_maps_url": "https://maps.app.goo.gl/eX78yjucT7fXP4rd6",
+    "lat": 44.5088314,
+    "lon": 11.3785219
+  },
+  {
     "nome_agenzia": "Immobiliare San Pietro - Bologna San Donato",
     "zona": "San Donato",
     "indirizzo": "Via Galeotti (zona)",
