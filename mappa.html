@@ -157,9 +157,13 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
       unlocated.push(a);
       continue;
     }
-    const query = a.indirizzo + ', ' + (a.zona || '') + ', Bologna, Italia';
     statusEl.textContent = 'Geocodifica: ' + a.nome_agenzia + '...';
-    const coords = await geocode(query, cache);
+    // Prova prima con "Bologna, Italia" (per indirizzi nel comune), poi con solo indirizzo+Italia
+    // (utile per agenzie con sede fuori Bologna, es. Medicina, Budrio, Castenaso)
+    let coords = await geocode(a.indirizzo + ', ' + (a.zona || '') + ', Bologna, Italia', cache);
+    if (!coords) {
+      coords = await geocode(a.indirizzo + ', Italia', cache);
+    }
     saveCache(cache);
     if (!coords) {
       unlocated.push(a);
