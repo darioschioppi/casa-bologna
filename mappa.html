@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mappa Agenzie — Casa Bologna 🏠</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --accent:#4ea1ff; --accent2:#ffb84e;
+    --text:#e8eaed; --muted:#9aa0a8; --border:#2a2e37;
+  }
+  *{box-sizing:border-box;}
+  html,body{ margin:0; height:100%; background:#0f1115; color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; }
+  header{ padding:20px 20px 12px; text-align:center; }
+  header h1{ margin:0 0 4px; font-size:1.6rem; }
+  header p{ margin:0; color:var(--muted); font-size:0.9rem; }
+  nav{ text-align:center; padding-bottom:10px; }
+  nav a{ color:var(--accent); text-decoration:none; font-size:0.9rem; margin:0 10px; }
+  nav a:hover{ text-decoration:underline; }
+  #status{ text-align:center; color:var(--muted); font-size:0.85rem; padding:4px 20px 10px; min-height:1.2em; }
+  #map{ width:100%; height:70vh; min-height:420px; }
+  .legend{
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:center; padding:14px 20px;
+    font-size:0.8rem; color:var(--muted);
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:11px; height:11px; border-radius:50%; display:inline-block; }
+  .unlocated{
+    max-width:900px; margin:10px auto 40px; padding:0 20px; color:var(--muted); font-size:0.85rem;
+  }
+  .unlocated ul{ padding-left:18px; }
+  .leaflet-popup-content-wrapper{ background:var(--card); color:var(--text); border-radius:10px; }
+  .leaflet-popup-tip{ background:var(--card); }
+  .popup h3{ margin:0 0 6px; font-size:1rem; }
+  .popup .row{ font-size:0.85rem; margin:2px 0; }
+  .popup .row span{ color:var(--muted); }
+  .popup a{ color:var(--accent); }
+  footer{ text-align:center; color:var(--muted); font-size:0.85rem; padding:10px 20px 30px; }
+  footer a{ color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗺️ Mappa Agenzie — Casa Bologna</h1>
+  <p>Pallini interattivi: clicca per contatti, zona e stato di ciascuna agenzia</p>
+</header>
+<nav>
+  <a href="./index.html">← Torna all'elenco</a>
+  <a href="./agenzie.csv">Dati CSV</a>
+</nav>
+
+<div id="status">Caricamento e geocodifica indirizzi in corso...</div>
+<div id="map"></div>
+
+<div class="legend" id="legend"></div>
+<div class="unlocated" id="unlocated"></div>
+
+<footer>
+  Dati gestiti in <a href="./agenzie.csv">agenzie.csv</a> —
+  <a href="https://github.com/darioschioppi/casa-bologna">repo su GitHub</a>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const STATO_COLORS = {
+  'da contattare': '#ffb84e',
+  'contattata': '#5fd0ff',
+  'appuntamento fissato': '#7be08a',
+  'visitata': '#a5a5ff',
+  'scartata': '#ff8f8f',
+};
+
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '', inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (inQuotes) {
+      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { cur += c; }
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ',') { result.push(cur); cur = ''; }
+      else cur += c;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+async function loadCSV() {
+  const res = await fetch('./agenzie.csv?_=' + Date.now());
+  const text = await res.text();
+  const lines = text.trim().split(/\r?\n/);
+  const headers = parseCSVLine(lines[0]);
+  return lines.slice(1).map(line => {
+    const values = parseCSVLine(line);
+    const obj = {};
+    headers.forEach((h, i) => obj[h.trim()] = (values[i] || '').trim());
+    return obj;
+  }).filter(o => o.nome_agenzia);
+}
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+const CACHE_KEY = 'casa-bologna-geocode-cache-v1';
+function loadCache() {
+  try { return JSON.parse(localStorage.getItem(CACHE_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveCache(cache) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); } catch(e) {}
+}
+
+async function geocode(query, cache) {
+  if (cache[query] !== undefined) return cache[query];
+  try {
+    const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(query) + '&limit=1&lang=it';
+    const res = await fetch(url);
+    const data = await res.json();
+    const feat = data.features && data.features[0];
+    if (feat) {
+      const coords = [feat.geometry.coordinates[1], feat.geometry.coordinates[0]];
+      cache[query] = coords;
+      return coords;
+    }
+    cache[query] = null;
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+(async function init() {
+  const statusEl = document.getElementById('status');
+  const map = L.map('map', { scrollWheelZoom: true }).setView([44.4949, 11.3426], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const agenzie = await loadCSV();
+  const cache = loadCache();
+  const bounds = [];
+  const unlocated = [];
+  const statiUsati = new Set();
+
+  for (const a of agenzie) {
+    if (!a.indirizzo) {
+      unlocated.push(a);
+      continue;
+    }
+    const query = a.indirizzo + ', ' + (a.zona || '') + ', Bologna, Italia';
+    statusEl.textContent = 'Geocodifica: ' + a.nome_agenzia + '...';
+    const coords = await geocode(query, cache);
+    saveCache(cache);
+    if (!coords) {
+      unlocated.push(a);
+      continue;
+    }
+    const stato = a.stato || 'da contattare';
+    statiUsati.add(stato);
+    const color = STATO_COLORS[stato] || '#4ea1ff';
+
+    const marker = L.circleMarker(coords, {
+      radius: 9,
+      fillColor: color,
+      color: '#0f1115',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.9,
+    }).addTo(map);
+
+    const popupHtml = `
+      <div class="popup">
+        <h3>${escapeHtml(a.nome_agenzia)}</h3>
+        <div class="row">📍 ${escapeHtml(a.zona || '—')}${a.indirizzo ? ' · ' + escapeHtml(a.indirizzo) : ''}</div>
+        ${a.persona_contatto ? `<div class="row"><span>Referente:</span> ${escapeHtml(a.persona_contatto)}</div>` : ''}
+        ${a.telefono ? `<div class="row"><span>Tel:</span> <a href="tel:${escapeHtml(a.telefono)}">${escapeHtml(a.telefono)}</a></div>` : ''}
+        ${a.email ? `<div class="row"><span>Email:</span> <a href="mailto:${escapeHtml(a.email)}">${escapeHtml(a.email)}</a></div>` : ''}
+        ${a.sito_web ? `<div class="row"><span>Sito:</span> <a href="${escapeHtml(a.sito_web)}" target="_blank" rel="noopener">apri sito</a></div>` : ''}
+        <div class="row"><span>Stato:</span> ${escapeHtml(stato)}</div>
+      </div>
+    `;
+    marker.bindPopup(popupHtml);
+    bounds.push(coords);
+
+    // small delay to be gentle with the free geocoding API
+    await sleep(150);
+  }
+
+  if (bounds.length) {
+    map.fitBounds(bounds, { padding: [30, 30] });
+  }
+
+  statusEl.textContent = bounds.length
+    ? `${bounds.length} agenzie geolocalizzate su ${agenzie.length} totali.`
+    : 'Nessuna agenzia geolocalizzata.';
+
+  // Legend
+  const legendEl = document.getElementById('legend');
+  const order = ['da contattare','contattata','appuntamento fissato','visitata','scartata'];
+  legendEl.innerHTML = order
+    .filter(s => statiUsati.has(s))
+    .map(s => `<span><span class="dot" style="background:${STATO_COLORS[s]}"></span>${s}</span>`)
+    .join('');
+
+  // Unlocated list
+  const unlocatedEl = document.getElementById('unlocated');
+  if (unlocated.length) {
+    unlocatedEl.innerHTML = `
+      <p><b>${unlocated.length} agenzie senza indirizzo geolocalizzabile</b> (indirizzo mancante o non trovato dal servizio di geocodifica):</p>
+      <ul>${unlocated.map(a => `<li>${escapeHtml(a.nome_agenzia)}${a.zona ? ' — ' + escapeHtml(a.zona) : ''}</li>`).join('')}</ul>
+    `;
+  }
+})();
+</script>
+
+</body>
+</html>
