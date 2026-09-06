@@ -105,17 +105,17 @@
     "lon": 11.3594068
   },
   {
-    "nome_agenzia": "Dalmonte",
+    "nome_agenzia": "Dalmonte srl - Agenzia Immobiliare",
     "zona": "Mazzini",
-    "indirizzo": "Via Mazzini 158/b",
+    "indirizzo": "Via Mazzini 158, 40138",
     "telefono": "",
     "email": "",
     "sito_web": "https://www.immobiliare.it/en/agenzie-immobiliari/232241/dalmonte-bologna-mazzini/",
     "persona_contatto": "",
     "stato": "da contattare",
-    "data_ultimo_contatto": "",
-    "note": "Trovata tramite ricerca web (zona Mazzini). Oltre 20 anni di attivita'.",
-    "google_maps_url": "",
+    "data_ultimo_contatto": "2026-09-06",
+    "note": "Oltre 20 anni di attivita'. Indirizzo confermato via Google Maps.",
+    "google_maps_url": "https://maps.app.goo.gl/KJZ2TgS6wsWKJkxB7",
     "lat": 44.4851054,
     "lon": 11.3707926
   },
