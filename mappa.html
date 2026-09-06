@@ -182,7 +182,9 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
       fillOpacity: 0.9,
     }).addTo(map);
 
-    const gmapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + coords[0] + ',' + coords[1];
+    // Usa il link Google Maps verificato manualmente (colonna google_maps_url) se presente,
+    // altrimenti genera un link dalle coordinate geocodificate automaticamente.
+    const gmapsUrl = a.google_maps_url || ('https://www.google.com/maps/search/?api=1&query=' + coords[0] + ',' + coords[1]);
     const popupHtml = `
       <div class="popup">
         <h3>${escapeHtml(a.nome_agenzia)}</h3>
