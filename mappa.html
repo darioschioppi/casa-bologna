@@ -109,7 +109,7 @@ function escapeHtml(s) {
   return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-const CACHE_KEY = 'casa-bologna-geocode-cache-v1';
+const CACHE_KEY = 'casa-bologna-geocode-cache-v2';
 function loadCache() {
   try { return JSON.parse(localStorage.getItem(CACHE_KEY) || '{}'); } catch(e) { return {}; }
 }
@@ -120,7 +120,7 @@ function saveCache(cache) {
 async function geocode(query, cache) {
   if (cache[query] !== undefined) return cache[query];
   try {
-    const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(query) + '&limit=1&lang=it';
+    const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(query) + '&limit=1';
     const res = await fetch(url);
     const data = await res.json();
     const feat = data.features && data.features[0];
