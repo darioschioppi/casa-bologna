@@ -10,7 +10,9 @@
     "stato": "contattata",
     "data_ultimo_contatto": "2026-09-06",
     "note": "Agente Esmeralda, contatto WhatsApp +39 3290310425. Referenziato anche Angelo Manzione.",
-    "google_maps_url": "https://share.google/jcycgBNrwoABmmk4w"
+    "google_maps_url": "https://share.google/jcycgBNrwoABmmk4w",
+    "lat": 44.5008418,
+    "lon": 11.3443969
   },
   {
     "nome_agenzia": "Abitare Bologna",
@@ -23,7 +25,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Nessun agente specifico indicato sul sito; presenti solo testimonianze clienti. PEC: abitarebolognaduesrl@pec.it. Indirizzo confermato via Google Maps: Via Santo Stefano 35, 40125 Bologna.",
-    "google_maps_url": "https://maps.app.goo.gl/9g6t8p7SpQkERQ148"
+    "google_maps_url": "https://maps.app.goo.gl/9g6t8p7SpQkERQ148",
+    "lat": 44.4903074,
+    "lon": 11.3497939
   },
   {
     "nome_agenzia": "Mondore",
@@ -36,7 +40,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Sede principale Centro (Quadrilatero). Altre sedi: San Lazzaro di Savena - Via Emilia 173B (051 728890, info@mondore.it) e sede direzionale Via Aldo Moro 4/A (051 0304250, direzionale@mondore.it). PEC: mondore@pec.it. Nessun agente specifico indicato.",
-    "google_maps_url": "https://maps.app.goo.gl/QJAUK5XWFwizCchB8"
+    "google_maps_url": "https://maps.app.goo.gl/QJAUK5XWFwizCchB8",
+    "lat": 44.48236,
+    "lon": 11.3489929
   },
   {
     "nome_agenzia": "Toscano - Agenzia Immobiliare Centro Bologna",
@@ -49,7 +55,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "WhatsApp +39 345 633 0777. Team: Marco Maselli, Aron Romano, Lorenzo Benassi (Account Senior); Elisa Cricchio (Account); Francesca Nanni, Gaia Pizzamei (Assistant); Eliane Camagni (Mutui). Orari: Lun-Ven 9:00-19:30, Sab 9:00-13:00.",
-    "google_maps_url": "https://maps.app.goo.gl/95hhHsG9kzY72iXQ8"
+    "google_maps_url": "https://maps.app.goo.gl/95hhHsG9kzY72iXQ8",
+    "lat": 44.4900254,
+    "lon": 11.3579382
   },
   {
     "nome_agenzia": "Iconacasa Bologna Mazzini",
@@ -62,7 +70,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Trovata tramite ricerca web (zona Mazzini).",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4829175,
+    "lon": 11.3762726
   },
   {
     "nome_agenzia": "Tempocasa Bologna Mazzini",
@@ -75,7 +85,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Trovata tramite ricerca web. Telefono non recuperato dal sito (verificare telefonando o via sito), virtual tour Matterport disponibile.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4845639,
+    "lon": 11.3715135
   },
   {
     "nome_agenzia": "Gabetti Bologna Mazzini",
@@ -88,7 +100,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Trovata tramite ricerca web (zona Mazzini). 22 annunci in vendita/affitto.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4826815,
+    "lon": 11.3594068
   },
   {
     "nome_agenzia": "Dalmonte",
@@ -101,7 +115,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Trovata tramite ricerca web (zona Mazzini). Oltre 20 anni di attivita'.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4851054,
+    "lon": 11.3707926
   },
   {
     "nome_agenzia": "Grimaldi Immobiliare Bologna Mazzini",
@@ -114,7 +130,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Trovata tramite ricerca web (zona Mazzini). Offre anche mutui e certificazioni energetiche.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4856225,
+    "lon": 11.3694978
   },
   {
     "nome_agenzia": "Gabetti Bologna Savena",
@@ -127,7 +145,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Ragione sociale: Due Torri Immobiliare Srls. Nome esteso su Google Maps: Gabetti Franchising Bologna Savena. Indirizzo confermato.",
-    "google_maps_url": "https://maps.app.goo.gl/akoVLAkxkqYU8yX68"
+    "google_maps_url": "https://maps.app.goo.gl/akoVLAkxkqYU8yX68",
+    "lat": 44.4711243,
+    "lon": 11.3865468
   },
   {
     "nome_agenzia": "Tempocasa Bologna Savena",
@@ -140,7 +160,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Trovata tramite ricerca web (zona Savena). Agenzia affiliata Chi.Ari s.r.l.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.478503,
+    "lon": 11.3849019
   },
   {
     "nome_agenzia": "Iconacasa Bologna Savena",
@@ -153,7 +175,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Trovata tramite ricerca web (zona Savena). Indirizzo confermato via Google Maps.",
-    "google_maps_url": "https://maps.app.goo.gl/WzzH6edNhf6Wrirv9"
+    "google_maps_url": "https://maps.app.goo.gl/WzzH6edNhf6Wrirv9",
+    "lat": 44.4797738,
+    "lon": 11.3834601
   },
   {
     "nome_agenzia": "Immobiliare San Lazzaro",
@@ -166,7 +190,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "WhatsApp +39 339 7759182. Telefono alternativo 051 6271468.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4788523,
+    "lon": 11.4127825
   },
   {
     "nome_agenzia": "Tempocasa San Lazzaro di Savena",
@@ -179,7 +205,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Diretta da Massimiliano Arixi con team di professionisti. Servizi di home staging e virtual tour.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4693024,
+    "lon": 11.4111395
   },
   {
     "nome_agenzia": "Azienda Immobiliare San Lazzaro",
@@ -192,7 +220,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Attiva dal 1987 nel territorio di San Lazzaro (oltre 30 anni di attivita').",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4638467,
+    "lon": 11.4059737
   },
   {
     "nome_agenzia": "Mondore - Agenzia San Lazzaro",
@@ -205,7 +235,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Sede secondaria di Mondore (vedi anche sede principale Centro Bologna). Nessun agente specifico indicato.",
-    "google_maps_url": "https://maps.app.goo.gl/ssZiud9ruXGm4Bds6"
+    "google_maps_url": "https://maps.app.goo.gl/ssZiud9ruXGm4Bds6",
+    "lat": 44.4700395,
+    "lon": 11.410235
   },
   {
     "nome_agenzia": "Capital House Bologna - San Donato",
@@ -218,7 +250,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "WhatsApp +39 350 1864172. 93 immobili disponibili nel quartiere San Donato e limitrofi.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.5026157,
+    "lon": 11.3627359
   },
   {
     "nome_agenzia": "Agenzia San Donato (Claudio Ferro & C.)",
@@ -231,7 +265,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Fondata nel 2011 da tre professionisti immobiliari con esperienza dal 1999.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.5057417,
+    "lon": 11.3723842
   },
   {
     "nome_agenzia": "Tecnocasa Studio San Donato",
@@ -244,7 +280,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Tra le agenzie piu' consigliate zona San Donato. Tel. alt. 327 2228586. Orari: Lun-Ven 9-13/15-20, Sab 9-13.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.5039058,
+    "lon": 11.3681543
   },
   {
     "nome_agenzia": "Immobiliare San Pietro - Bologna San Donato",
@@ -257,7 +295,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Specializzata nella zona San Donato con proprieta' in Via Galeotti e Via Piana.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.5031911,
+    "lon": 11.3641467
   },
   {
     "nome_agenzia": "Iconacasa Bologna San Donato (Pilastro)",
@@ -270,7 +310,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Copre anche la zona Pilastro. Indirizzo esatto da confermare sul sito Iconacasa.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.5031911,
+    "lon": 11.3641467
   },
   {
     "nome_agenzia": "Tecnocasa Studio Castenaso",
@@ -283,7 +325,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Affiliata Tecnocasa dal 1990, team di 5 agenti + coordinatore. Orari: Lun-Ven 9-13/15-20, Sab 9-13.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.5066046,
+    "lon": 11.4706866
   },
   {
     "nome_agenzia": "Baraldi Immobiliare",
@@ -296,7 +340,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Orari: mattina 9-13",
-    "google_maps_url": "pomeriggio 16-19:30"
+    "google_maps_url": "pomeriggio 16-19:30",
+    "lat": 44.5066708,
+    "lon": 11.4711606
   },
   {
     "nome_agenzia": "Tempocasa Castenaso",
@@ -309,7 +355,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Trovata tramite ricerca web (Castenaso).",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.506848,
+    "lon": 11.4596843
   },
   {
     "nome_agenzia": "Rizzoli Servizi Immobiliari",
@@ -322,7 +370,9 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Oltre 20 anni di esperienza. Orari: Lun-Ven 9:00-12:30/14:30-18:30, Sab 9:00-12:20, chiuso domenica.",
-    "google_maps_url": ""
+    "google_maps_url": "",
+    "lat": 44.4980184,
+    "lon": 11.4243432
   },
   {
     "nome_agenzia": "Immobili e Imprese",
@@ -335,6 +385,8 @@
     "stato": "da contattare",
     "data_ultimo_contatto": "",
     "note": "Specializzata in immobili commerciali/industriali",
-    "google_maps_url": "attiva dal 1994 - meno rilevante per residenziale ma segnalata in zona."
+    "google_maps_url": "attiva dal 1994 - meno rilevante per residenziale ma segnalata in zona.",
+    "lat": 44.4982607,
+    "lon": 11.4231743
   }
 ]

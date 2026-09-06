@@ -52,7 +52,7 @@
   <a href="./agenzie.json">Dati JSON</a>
 </nav>
 
-<div id="status">Caricamento e geocodifica indirizzi in corso...</div>
+<div id="status">Caricamento mappa...</div>
 <div id="map"></div>
 
 <div class="legend" id="legend"></div>
@@ -126,21 +126,28 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   const statiUsati = new Set();
 
   for (const a of agenzie) {
-    if (!a.indirizzo) {
-      unlocated.push(a);
-      continue;
-    }
-    statusEl.textContent = 'Geocodifica: ' + a.nome_agenzia + '...';
-    // Prova prima con "Bologna, Italia" (per indirizzi nel comune), poi con solo indirizzo+Italia
-    // (utile per agenzie con sede fuori Bologna, es. Medicina, Budrio, Castenaso)
-    let coords = await geocode(a.indirizzo + ', ' + (a.zona || '') + ', Bologna, Italia', cache);
+    // Usa le coordinate pre-calcolate salvate in agenzie.json (lat/lon) quando presenti:
+    // caricamento istantaneo, nessuna chiamata di rete. Fallback alla geocodifica live
+    // solo per agenzie nuove che non hanno ancora lat/lon salvate.
+    let coords = (typeof a.lat === 'number' && typeof a.lon === 'number') ? [a.lat, a.lon] : null;
+
     if (!coords) {
-      coords = await geocode(a.indirizzo + ', Italia', cache);
-    }
-    saveCache(cache);
-    if (!coords) {
-      unlocated.push(a);
-      continue;
+      if (!a.indirizzo) {
+        unlocated.push(a);
+        continue;
+      }
+      statusEl.textContent = 'Geocodifica: ' + a.nome_agenzia + '...';
+      // Prova prima con "Bologna, Italia" (per indirizzi nel comune), poi con solo indirizzo+Italia
+      // (utile per agenzie con sede fuori Bologna, es. Medicina, Budrio, Castenaso)
+      coords = await geocode(a.indirizzo + ', ' + (a.zona || '') + ', Bologna, Italia', cache);
+      if (!coords) {
+        coords = await geocode(a.indirizzo + ', Italia', cache);
+      }
+      saveCache(cache);
+      if (!coords) {
+        unlocated.push(a);
+        continue;
+      }
     }
     const stato = a.stato || 'da contattare';
     statiUsati.add(stato);
@@ -172,9 +179,6 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
     `;
     marker.bindPopup(popupHtml);
     bounds.push(coords);
-
-    // small delay to be gentle with the free geocoding API
-    await sleep(150);
   }
 
   if (bounds.length) {
