@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case da vedere — Casa Bologna 🏠</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --accent:#4ea1ff; --accent2:#ffb84e;
+    --text:#e8eaed; --muted:#9aa0a8; --border:#2a2e37;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,#0f1115,#14171d); color:var(--text); min-height:100vh;
+  }
+  header{ padding:36px 20px 12px; text-align:center; }
+  header h1{ margin:0 0 6px; font-size:2rem; }
+  header p{ margin:0; color:var(--muted); }
+  nav{ text-align:center; padding-bottom:10px; }
+  nav a{ color:var(--accent); text-decoration:none; font-size:0.9rem; margin:0 10px; }
+  nav a:hover{ text-decoration:underline; }
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 20px 60px; }
+  .toolbar{ display:flex; gap:12px; flex-wrap:wrap; margin:24px 0; align-items:center; }
+  .toolbar input{
+    background:var(--card); border:1px solid var(--border); color:var(--text);
+    padding:10px 14px; border-radius:8px; font-size:0.95rem; flex:1; min-width:200px;
+  }
+  .stats{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:20px; }
+  .stat{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    padding:14px 18px; min-width:120px; text-align:center;
+  }
+  .stat .n{ font-size:1.6rem; font-weight:700; color:var(--accent); }
+  .stat .l{ font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; }
+  h2.section-title{
+    font-size:1.2rem; margin:30px 0 14px; border-left:4px solid var(--accent); padding-left:10px;
+  }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px;
+    display:flex; flex-direction:column; gap:8px; overflow-wrap:anywhere; min-width:0;
+  }
+  .card h3{ margin:0; font-size:1.1rem; overflow-wrap:anywhere; }
+  .badge{
+    display:inline-block; font-size:0.72rem; padding:3px 10px; border-radius:20px;
+    text-transform:uppercase; letter-spacing:0.03em; font-weight:600; align-self:flex-start;
+  }
+  .b-da-vedere{ background:#3a3220; color:var(--accent2); }
+  .b-vista{ background:#26402a; color:#7be08a; }
+  .b-scartata{ background:#402626; color:#ff8f8f; }
+  .b-piaciuta{ background:#2a2a45; color:#a5a5ff; }
+  .card .zona{ color:var(--muted); font-size:0.85rem; }
+  .card .row{ font-size:0.9rem; color:var(--text); }
+  .card .row span{ color:var(--muted); }
+  .card a{ color:var(--accent); text-decoration:none; }
+  .card a:hover{ text-decoration:underline; }
+  .card .price{ font-size:1.3rem; font-weight:700; color:var(--accent2); }
+  .empty{ text-align:center; color:var(--muted); padding:40px 20px; font-size:0.9rem; }
+  footer{ text-align:center; color:var(--muted); font-size:0.85rem; padding:30px 20px; }
+  footer a{ color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏡 Case da vedere</h1>
+  <p>Annunci trovati, appuntamenti fissati e case già visitate</p>
+</header>
+<nav>
+  <a href="./index.html">← Elenco agenzie</a>
+  <a href="./mappa.html">Mappa agenzie</a>
+  <a href="./case.json">Dati JSON</a>
+</nav>
+
+<div class="wrap">
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <input type="text" id="search" placeholder="Cerca per zona, indirizzo, agenzia...">
+  </div>
+
+  <h2 class="section-title">📋 Da vedere</h2>
+  <div class="cards" id="cards-da-vedere"></div>
+  <div class="empty" id="empty-da-vedere" style="display:none;">Nessun immobile in questa categoria.</div>
+
+  <h2 class="section-title">✅ Già viste</h2>
+  <div class="cards" id="cards-viste"></div>
+  <div class="empty" id="empty-viste" style="display:none;">Nessun immobile in questa categoria.</div>
+</div>
+
+<footer>
+  Dati gestiti in <a href="./case.json">case.json</a> —
+  <a href="https://github.com/darioschioppi/casa-bologna">repo su GitHub</a>
+</footer>
+
+<script>
+async function loadData() {
+  const res = await fetch('./case.json?_=' + Date.now());
+  return await res.json();
+}
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function slug(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
+
+function badgeClass(stato) {
+  return 'b-' + slug(stato || 'da vedere');
+}
+
+function renderCard(c) {
+  const stato = c.stato || 'da vedere';
+  const priceLine = c.prezzo ? `<div class="price">${escapeHtml(c.prezzo)}</div>` : '';
+  return `
+    <div class="card">
+      <span class="badge ${badgeClass(stato)}">${escapeHtml(stato)}</span>
+      <h3>${escapeHtml(c.titolo || 'Immobile')}</h3>
+      ${priceLine}
+      <div class="zona">📍 ${escapeHtml(c.zona || '—')}${c.indirizzo ? ' · ' + escapeHtml(c.indirizzo) : ''}</div>
+      ${c.mq ? `<div class="row"><span>Superficie:</span> ${escapeHtml(c.mq)} m²</div>` : ''}
+      ${c.camere ? `<div class="row"><span>Camere:</span> ${escapeHtml(c.camere)}</div>` : ''}
+      ${c.piano ? `<div class="row"><span>Piano:</span> ${escapeHtml(c.piano)}</div>` : ''}
+      ${c.stato_immobile ? `<div class="row"><span>Stato immobile:</span> ${escapeHtml(c.stato_immobile)}</div>` : ''}
+      ${c.agenzia_riferimento ? `<div class="row"><span>Agenzia:</span> ${escapeHtml(c.agenzia_riferimento)}</div>` : ''}
+      ${c.data_visita ? `<div class="row"><span>Data visita:</span> ${escapeHtml(c.data_visita)}</div>` : ''}
+      ${c.note ? `<div class="row"><span>Note:</span> ${escapeHtml(c.note)}</div>` : ''}
+      ${c.url ? `<div class="row"><a href="${escapeHtml(c.url)}" target="_blank" rel="noopener">🔗 Vedi annuncio</a></div>` : ''}
+    </div>
+  `;
+}
+
+function render(all) {
+  const q = document.getElementById('search').value.toLowerCase();
+  const filtered = all.filter(c => !q || Object.values(c).some(v => (v||'').toString().toLowerCase().includes(q)));
+
+  const viste = filtered.filter(c => (c.stato || '').toLowerCase() !== 'da vedere');
+  const daVedere = filtered.filter(c => (c.stato || 'da vedere').toLowerCase() === 'da vedere');
+
+  const cardsDaVedere = document.getElementById('cards-da-vedere');
+  const emptyDaVedere = document.getElementById('empty-da-vedere');
+  cardsDaVedere.innerHTML = daVedere.map(renderCard).join('');
+  emptyDaVedere.style.display = daVedere.length ? 'none' : 'block';
+
+  const cardsViste = document.getElementById('cards-viste');
+  const emptyViste = document.getElementById('empty-viste');
+  cardsViste.innerHTML = viste.map(renderCard).join('');
+  emptyViste.style.display = viste.length ? 'none' : 'block';
+
+  const statsEl = document.getElementById('stats');
+  statsEl.innerHTML = `
+    <div class="stat"><div class="n">${all.length}</div><div class="l">Totale</div></div>
+    <div class="stat"><div class="n">${daVedere.length}</div><div class="l">Da vedere</div></div>
+    <div class="stat"><div class="n">${viste.length}</div><div class="l">Viste / altro stato</div></div>
+  `;
+}
+
+(async function init() {
+  const all = await loadData();
+  render(all);
+  document.getElementById('search').addEventListener('input', () => render(all));
+})();
+</script>
+
+</body>
+</html>
