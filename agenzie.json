@@ -478,5 +478,20 @@
     "google_maps_url": "https://maps.app.goo.gl/hzGerbH8rdBY1csZA",
     "lat": 44.4966695,
     "lon": 11.3695393
+  },
+  {
+    "nome_agenzia": "BolognaCentro",
+    "zona": "Santo Stefano",
+    "indirizzo": "Via Santo Stefano 36, 40125",
+    "telefono": "345 95 85 569",
+    "email": "f.marcucci@bolognacentro.com",
+    "sito_web": "https://www.bolognacentro.com/",
+    "persona_contatto": "Franco Marcucci (Responsabile Filiale) - CONSULENTE CONSIGLIATO",
+    "stato": "da contattare",
+    "data_ultimo_contatto": "2026-09-06",
+    "note": "Franco Marcucci consigliato come consulente di riferimento. Segreteria: Valentina Bortolotti, tel. 051 225530. Altra sede BolognaCentro 1 in Via Santo Stefano 38/d (tel. 051 225530 / 051 270566).",
+    "google_maps_url": "",
+    "lat": 44.4905166,
+    "lon": 11.3499663
   }
 ]
